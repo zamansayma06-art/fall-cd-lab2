@@ -1,29 +1,41 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
-#include "identifier.h"
-#include "average.h"
-#include "minmax.h"
-#include "fullname.h"
+bool isNum(string s) {
+    if (s.empty()) return false;
 
-int main() {
-    int choice;
-    cout << "=== Program Menu ===\n";
-    cout << "1. Check valid identifier\n";
-    cout << "2. Calculate average\n";
-    cout << "3. Find min and max\n";
-    cout << "4. Get full name\n";
-    cout << "Enter your choice: ";
-    cin >> choice;
+    if (!(isalpha(s[0]) || s[0] == ' ')) return false;
 
-    switch (choice) {
-        case 1: runIdentifier(); break;
-        case 2: runAverage(); break;
-        case 3: runMinMax(); break;
-        case 4: runFullName(); break;
-        default: cout << "Invalid choice!" << endl;
+    for (int i = 1; i < s.length(); i++) {
+        if (!(isalnum(s[i]) || s[i] == ' ')) return false;
     }
+    return true;
+}
+bool readFile(string filename) {
+    ifstream file(filename);
+    if (!file) return false;
+
+    string word;
+
+
+    cout << "checking identifiers:"<<endl;
+    while (file >> word) {
+        cout << "String : " << word;
+        if (isNum(word))
+            cout << " -> valid identifier"<<endl;
+        else
+            cout << " -> invalid identifier"<<endl;
+    }
+    return true;
+}
+int main() {
+    string filename = "comp.txt";
+
+    if (readFile(filename))
+        cout << "file read and checked successfully!" << endl;
+    else
+        cout << "failed to read file!" << endl;
 
     return 0;
 }
-
